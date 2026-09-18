@@ -85,22 +85,6 @@ static void crc_build_braid_table(params_t *params) {
     }
 }
 
-//Add len zeros to the input.
-static uint64_t crc_zeros(params_t *params, uint64_t crc, uint64_t len) {
-    while(len--) {
-        crc = (crc >> 8) ^ params->crc_table[crc & 0xff];
-    }
-    return crc;
-}
-
-//Compute the CRC of the input buffer byte-by-byte.
-static uint64_t crc_bytes(params_t *params, uint64_t crc, unsigned char const *buf, uint64_t len) {
-    while(len--) {
-        crc = (crc >> 8) ^ params->crc_table[(crc ^ *buf++) & 0xff];
-    }
-    return crc;
-}
-
 //Align the CRC.
 static uint64_t crc_initial(params_t *params, uint64_t crc) {
     crc ^= params->xorout;
@@ -122,6 +106,22 @@ static uint64_t crc_final(params_t *params, uint64_t crc) {
         crc = reflect(crc, params->width);
     }
     return crc ^ params->xorout;
+}
+
+//Add len zeros to the input.
+static uint64_t crc_zeros(params_t *params, uint64_t crc, uint64_t len) {
+    while(len--) {
+        crc = (crc >> 8) ^ params->crc_table[crc & 0xff];
+    }
+    return crc;
+}
+
+//Compute the CRC of the input buffer byte-by-byte.
+static uint64_t crc_bytes(params_t *params, uint64_t crc, unsigned char const *buf, uint64_t len) {
+    while(len--) {
+        crc = (crc >> 8) ^ params->crc_table[(crc ^ *buf++) & 0xff];
+    }
+    return crc;
 }
 
 //Calculate the CRC using the crc table.
@@ -146,16 +146,13 @@ uint64_t crc_braid(params_t *params, uint64_t crc, unsigned char const *buf, uin
 
     if(len >= N * 8) {
         uint64_t *ptr = (uint64_t*)buf;
-        uint64_t blks = len / (N * 8);
         uint64_t words[N];
 
         uint64_t crcs[N] = {0};
         crcs[0] = crc;
 
-        len -= blks * N * 8;
-
         //The for loops must be unrolled by the optimizing compiler.
-        while(--blks) {
+        while(len >= N * 8 * 2) {
             for(uint64_t n = 0; n < N; n++) {
                 words[n] = crcs[n] ^ ptr[n];
 
@@ -164,17 +161,18 @@ uint64_t crc_braid(params_t *params, uint64_t crc, unsigned char const *buf, uin
                     crcs[n] ^= params->braid_table[w][(words[n] >> (w * 8)) & 0xff];
                 }
             }
-
             ptr += N;
+            len -= N * 8;
         }
 
-        //Combine the CRCs.
+        //Combine the CRCs and process the last block at the same time.
         crc = 0;
         for(uint8_t n = 0; n < N; n++) {
             crc = crc_zeros(params, crc ^ crcs[n] ^ ptr[n], 8);
         }
 
         buf = (unsigned char const*)(ptr + N);
+        len -= N * 8;
     }
 
     crc = crc_bytes(params, crc, buf, len);
