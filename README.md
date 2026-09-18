@@ -14,7 +14,7 @@ This is a generalization of zlib's CRC braiding algorithm that accepts any [CRC 
 
 Tested on a 10th generation Intel i7 processor. Measured in GiB/s.
 
-The number of CRCs computed can be adjusted in the header using the constant `N`. Different values could be more optimal depending on the hardware.
+The number of CRCs computed in parallel can be adjusted using the constant `N` in the header. Different values could be more optimal depending on the hardware.
 
 The algorithm is about 50% faster than the slicing algorithm.
 
