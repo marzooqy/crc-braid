@@ -25,52 +25,32 @@ void bench(uint64_t n, uint64_t len) {
         printf("| %lli MB |", len / ten_pow(6));
     }
 
-    clock_t start, end;
-    float speed;
-    params_t params;
-
     unsigned char* buf = (unsigned char*) malloc(len);
 
     for(uint64_t i = 0; i < len; i++) {
         buf[i] = i & 0xff;
     }
 
-    //reflected
-    params = crc_params(64, 0x42f0e1eba9ea3693, 0xffffffffffffffff, true, true, 0xffffffffffffffff);
+    params_t params = crc_params(64, 0x42f0e1eba9ea3693, 0xffffffffffffffff, false, false, 0xffffffffffffffff);
 
-    start = clock();
-
-    for(uint64_t i = 0; i < n; i++) {
-        crc_braid(&params, params.init, buf, len);
-    }
-
-    end = clock();
-
-    speed = (float)(len * n) / ((float)(end - start) / CLOCKS_PER_SEC) / powf(1024, 3);
-
-    printf(" %.2f ", speed);
-
-    //non-Reflected
-    params = crc_params(64, 0x42f0e1eba9ea3693, 0xffffffffffffffff, false, false, 0xffffffffffffffff);
-
-    start = clock();
+    clock_t start = clock();
 
     for(uint64_t i = 0; i < n; i++) {
         crc_braid(&params, params.init, buf, len);
     }
 
-    end = clock();
+    clock_t end = clock();
 
-    speed = (float)(len * n) / ((float)(end - start) / CLOCKS_PER_SEC) / powf(1024, 3);
+    float speed = (float)(len * n) / ((float)(end - start) / CLOCKS_PER_SEC) / powf(1024, 3);
 
-    printf("| %.2f |\n", speed);
+    printf(" %.2f |\n", speed);
 
     free(buf);
 }
 
 void main() {
-    printf("| Length | Reflected | Non-Reflected |\n");
-    printf("| --- | :-: | :-: |\n");
+    printf("| Length | Speed |\n");
+    printf("| --- | :-: |\n");
 
     bench(ten_pow(7), ten_pow(2));
     bench(ten_pow(6), ten_pow(3));

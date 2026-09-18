@@ -2,15 +2,15 @@ This is a generalization of zlib's CRC braiding algorithm that accepts any [CRC 
 
 ## Benchmark
 
-| Length | Reflected | Non-Reflected |
-| --- | :-: | :-: |
-| 100 B | 1.65 | 1.62 |
-| 1 KB | 3.65 | 3.62 |
-| 10 KB | 4.50 | 4.50 |
-| 100 KB | 4.61 | 4.61 |
-| 1 MB | 4.63 | 4.48 |
-| 10 MB | 4.50 | 4.50 |
-| 100 MB | 4.18 | 4.27 |
+| Length | Speed |
+| --- | :-: |
+| 100 B | 1.61 |
+| 1 KB | 3.61 |
+| 10 KB | 4.46 |
+| 100 KB | 4.66 |
+| 1 MB | 4.63 |
+| 10 MB | 4.52 |
+| 100 MB | 4.23 |
 
 Tested on a 10th generation Intel i7 processor. Measured in GiB/s.
 
