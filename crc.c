@@ -54,14 +54,15 @@ static void crc_build_table(params_t *params) {
         if(params->refin) {
             for(uint8_t j = 0; j < 8; j++) {
                 crc = (crc >> 1) ^ (params->poly & -(crc & 1));
-                params->crc_table[i] = crc;
             }
+            params->crc_table[i] = crc;
+
         } else {
             crc <<= 56;
             for(uint8_t j = 0; j < 8; j++) {
                 crc = (crc << 1) ^ (params->poly & -(crc >> 63));
-                params->crc_table[i] = swap(crc);
             }
+            params->crc_table[i] = swap(crc);
         }
     }
 }
@@ -107,7 +108,7 @@ static uint64_t crc_initial(params_t *params, uint64_t crc) {
         crc = reflect(crc, params->width);
     }
     if(!params->refin) {
-        crc = swap(crc << 64 - params->width);
+        crc = swap(crc << (64 - params->width));
     }
     return crc;
 }
