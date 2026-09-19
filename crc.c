@@ -175,6 +175,7 @@ uint64_t crc_braid(params_t *params, uint64_t crc, unsigned char const *buf, uin
         len -= N * 8;
     }
 
+    //Calculate the remaining bytes and return the CRC.
     crc = crc_bytes(params, crc, buf, len);
     return crc_final(params, crc);
 }
