@@ -23,10 +23,10 @@ static uint64_t reflect(uint64_t x, uint8_t w) {
 
 //Swap the bytes of an integer.
 static uint64_t swap(uint64_t x) {
-    return (x & 0xff00000000000000) >> 56 | (x & 0xff) << 56
-         | (x & 0xff000000000000) >> 40 | (x & 0xff00) << 40
-         | (x & 0xff0000000000) >> 24 | (x & 0xff0000) << 24
-         | (x & 0xff00000000) >> 8 | (x & 0xff000000) << 8;
+    return ((x & 0xff00000000000000) >> 56) | ((x & 0xff) << 56)
+         | ((x & 0xff000000000000) >> 40) | ((x & 0xff00) << 40)
+         | ((x & 0xff0000000000) >> 24) | ((x & 0xff0000) << 24)
+         | ((x & 0xff00000000) >> 8) | ((x & 0xff000000) << 8);
 }
 
 //Create and initialize a params_t struct.
