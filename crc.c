@@ -55,15 +55,15 @@ static void crc_build_table(params_t *params) {
             for(uint8_t j = 0; j < 8; j++) {
                 crc = (crc >> 1) ^ (params->poly & -(crc & 1));
             }
-            params->crc_table[i] = crc;
-
         } else {
             crc <<= 56;
             for(uint8_t j = 0; j < 8; j++) {
                 crc = (crc << 1) ^ (params->poly & -(crc >> 63));
             }
-            params->crc_table[i] = swap(crc);
+            crc = swap(crc);
         }
+
+        params->crc_table[i] = crc;
     }
 }
 
