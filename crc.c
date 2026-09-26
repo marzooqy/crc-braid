@@ -10,6 +10,9 @@ static uint64_t crc_bytes(params_t *params, uint64_t crc, unsigned char const *b
 static void crc_build_table(params_t *params);
 static void crc_build_braid_table(params_t *params);
 
+//Convert a boolean into an AND mask.
+#define and_mask(c) (-(uint64_t)(c))
+
 //Reflect an integer x of width w.
 static uint64_t reflect(uint64_t x, uint8_t w) {
     x = ((x >> 32) & 0xffffffff) | ((x << 32) & 0xffffffff00000000);
@@ -53,12 +56,12 @@ static void crc_build_table(params_t *params) {
 
         if(params->refin) {
             for(uint8_t j = 0; j < 8; j++) {
-                crc = (crc >> 1) ^ (params->poly & -(crc & 1));
+                crc = (crc >> 1) ^ (params->poly & and_mask(crc & 1));
             }
         } else {
             crc <<= 56;
             for(uint8_t j = 0; j < 8; j++) {
-                crc = (crc << 1) ^ (params->poly & -(crc >> 63));
+                crc = (crc << 1) ^ (params->poly & and_mask(crc >> 63));
             }
             crc = swap(crc);
         }
