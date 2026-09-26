@@ -4,13 +4,13 @@ This is a generalization of zlib's CRC braiding algorithm that accepts any [CRC 
 
 | Length | Speed |
 | --- | :-: |
-| 100 B | 1.61 |
-| 1 KB | 3.61 |
-| 10 KB | 4.46 |
-| 100 KB | 4.66 |
-| 1 MB | 4.63 |
-| 10 MB | 4.52 |
-| 100 MB | 4.23 |
+| 100 B | 1.44 |
+| 1 KB | 3.79 |
+| 10 KB | 4.63 |
+| 100 KB | 4.75 |
+| 1 MB | 4.78 |
+| 10 MB | 4.66 |
+| 100 MB | 4.25 |
 
 Tested on a 10th generation Intel i7 processor. Measured in GiB/s.
 

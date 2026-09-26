@@ -31,15 +31,15 @@ for name, model in models.items():
     value = crc_table(params, params.init, b'123456789')
     check('Table', value, model.check)
 
-    #len < 24
+    #len < 32
     value = crc_braid(params, params.init, test_data[:10])
     value2 = crc_table(params, params.init, test_data[:10])
-    check('len < 24', value, value2)
+    check('len < 32', value, value2)
 
-    #len > 24
+    #len > 32
     value = crc_braid(params, params.init, test_data)
     value2 = crc_table(params, params.init, test_data)
-    check('len > 24', value, value2)
+    check('len > 32', value, value2)
 
     #chunked
     value = crc_braid(params, params.init, test_data[:100])

@@ -144,35 +144,39 @@ uint64_t crc_braid(params_t *params, uint64_t crc, unsigned char const *buf, uin
         len -= rem;
     }
 
-    if(len >= N * 8) {
+    if(len >= N * 8 * 2) {
         uint64_t *ptr = (uint64_t*)buf;
         uint64_t words[N];
+        uint64_t crcs[N];
 
-        uint64_t crcs[N] = {0};
-        crcs[0] = crc;
+        for(uint64_t n = 0; n < N; n++) {
+            words[n] = ptr[n];
+        }
+        words[0] ^= crc;
+
+        ptr += N;
+        len -= N * 8;
 
         //The for loops must be unrolled by the optimizing compiler.
-        while(len >= N * 8 * 2) {
+        while(len >= N * 8) {
             for(uint64_t n = 0; n < N; n++) {
-                words[n] = crcs[n] ^ ptr[n];
-
                 crcs[n] = 0;
                 for(uint64_t w = 0; w < 8; w++) {
                     crcs[n] ^= params->braid_table[w][(words[n] >> (w * 8)) & 0xff];
                 }
+                words[n] = crcs[n] ^ ptr[n];
             }
             ptr += N;
             len -= N * 8;
         }
 
-        //Combine the CRCs and process the last block at the same time.
+        //Combine the CRCs.
         crc = 0;
         for(uint8_t n = 0; n < N; n++) {
-            crc = crc_zeros(params, crc ^ crcs[n] ^ ptr[n], 8);
+            crc = crc_zeros(params, crc ^ words[n], 8);
         }
 
-        buf = (unsigned char const*)(ptr + N);
-        len -= N * 8;
+        buf = (unsigned char const*)ptr;
     }
 
     //Calculate the remaining bytes and return the CRC.
