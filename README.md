@@ -1,4 +1,4 @@
-This is a generalization of zlib's CRC braiding algorithm that accepts any [CRC parameters](https://reveng.sourceforge.io/crc-catalogue/all.htm).
+This is a generalized version of zlib's CRC braiding algorithm. It accepts any CRC parameters from the [RevEng catalogue](https://reveng.sourceforge.io/crc-catalogue/all.htm).
 
 ## Benchmark
 

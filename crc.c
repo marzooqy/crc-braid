@@ -74,14 +74,7 @@ static void crc_build_table(params_t *params) {
 //The table adds N * 8 + (7 - w) zeros to the input byte.
 static void crc_build_braid_table(params_t *params) {
     for(uint16_t i = 0; i < 256; i++) {
-        uint64_t crc = i;
-
-        if(!params->refin) {
-            crc = swap(crc << 56);
-        }
-
-        crc = crc_zeros(params, crc, N * 8 - 8);
-
+        uint64_t crc = crc_zeros(params, i, N * 8 - 8);
         for(uint8_t w = 0; w < 8; w++) {
             crc = params->braid_table[8 - w - 1][i] = crc_zeros(params, crc, 1);
         }
@@ -152,6 +145,7 @@ uint64_t crc_braid(params_t *params, uint64_t crc, unsigned char const *buf, uin
         uint64_t words[N];
         uint64_t crcs[N];
 
+        //Load the first block.
         for(uint8_t n = 0; n < N; n++) {
             words[n] = ptr[n];
         }
