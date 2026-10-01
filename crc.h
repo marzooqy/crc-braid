@@ -10,9 +10,6 @@
 #define DLL_EXPORT
 #endif
 
-/* Number of CRCs to be computed in each iteration. */
-#define N 4
-
 /* Holds CRC parameters and tables. */
 typedef struct {
     uint8_t width;
