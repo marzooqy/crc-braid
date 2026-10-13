@@ -1,5 +1,8 @@
 #include "crc.h"
 
+//Number of CRCs to be computed in each iteration.
+const uint64_t N = 4;
+
 //Static function declarations.
 static uint64_t reflect(uint64_t x, uint8_t w);
 static uint64_t swap(uint64_t x);
@@ -9,9 +12,6 @@ static uint64_t crc_zeros(params_t *params, uint64_t crc, uint64_t len);
 static uint64_t crc_bytes(params_t *params, uint64_t crc, unsigned char const *buf, uint64_t len);
 static void crc_build_table(params_t *params);
 static void crc_build_braid_table(params_t *params);
-
-//Number of CRCs to be computed in each iteration.
-#define N 4
 
 //Convert a boolean into an AND mask.
 #define and_mask(c) (-(uint64_t)(c))
