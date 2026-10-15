@@ -1,7 +1,7 @@
 #include "crc.h"
 
 //Number of CRCs to be computed in each iteration.
-const uint64_t N = 4;
+const uint64_t N = 5;
 
 //Static function declarations.
 static uint64_t reflect(uint64_t x, uint8_t w);
