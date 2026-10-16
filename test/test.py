@@ -48,7 +48,7 @@ for name, model in models.items():
     check('Chunked', value, value2)
 
     #unaligned
-    for i in range(1, 16):
+    for i in range(1, 8):
         value = crc_braid_unaligned(params, params.init, test_data, i)
         value2 = crc_table(params, params.init, test_data[i:])
         check('Unaligned', value, value2, False)

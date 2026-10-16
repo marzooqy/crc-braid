@@ -16,7 +16,7 @@ uint64_t ten_pow(int8_t n) {
     return i;
 }
 
-void bench(uint64_t n, uint64_t len) {
+void bench(uint64_t len, uint64_t n) {
     if(len < ten_pow(3)) {
         printf("| %lli B |", len);
     } else if(len < ten_pow(6)) {
@@ -52,11 +52,11 @@ void main() {
     printf("| Length | Speed |\n");
     printf("| --- | :-: |\n");
 
-    bench(ten_pow(7), ten_pow(2));
-    bench(ten_pow(6), ten_pow(3));
-    bench(ten_pow(5), ten_pow(4));
-    bench(ten_pow(4), ten_pow(5));
-    bench(ten_pow(3), ten_pow(6));
     bench(ten_pow(2), ten_pow(7));
-    bench(ten_pow(1), ten_pow(8));
+    bench(ten_pow(3), ten_pow(6));
+    bench(ten_pow(4), ten_pow(5));
+    bench(ten_pow(5), ten_pow(4));
+    bench(ten_pow(6), ten_pow(3));
+    bench(ten_pow(7), ten_pow(2));
+    bench(ten_pow(8), ten_pow(1));
 }
